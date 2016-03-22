@@ -1,0 +1,66 @@
+<project name="starling-1.8.0" basedir="." default="all">
+    
+<description>
+Starling Framework Library
+</description>    
+
+<property name="support.home" location=".."/>
+<import file="${support.home}/ant/air.xml"/>
+<property file="${support.home}/build.properties"/>
+
+<!-- Source -->
+<property name="src.root" location="starling/src" />
+
+<!-- Build -->
+<property name="build.root" location="build"/>
+<property name="build.package" location="${build.root}/package"/>
+
+<!-- Global targets -->
+<target name="all" depends="package"/>
+
+<!-- Init -->
+<target name="init">
+
+    <tstamp>
+        <format property="build.time" pattern="yyyy/MM/dd hh:mm"/>
+    </tstamp>
+
+</target>
+
+<!-- Clean -->
+<target name="clean" description="Remove build files">
+    <delete dir="${build.root}"/>
+</target>
+
+<!-- Dependencies -->
+<target name="dependencies">
+
+    <path id="src.path">
+        <pathelement location='${src.root}/com/'/>
+        <pathelement location='${src.root}/starling/'/>
+    </path>
+
+</target>
+
+<!-- Compile init -->
+<target name="compile-init" depends="init,dependencies">
+    <mkdir dir="${build.package}"/>
+</target>
+
+<!-- Package -->
+<target name="package" depends="compile-init" description="Builds the library (.swc file)">
+    
+<echo message="Packaging swc to ${build.package}"/>
+
+	<compc 
+		pathRef="src.path"
+		configxml="resources/lib.xml"
+		debug="false"
+		sdkConfig="air"
+		sdkPath="${air.sdk.home}"
+		output="${build.package}/${ant.project.name}.swc">
+	</compc>
+
+</target>
+	
+</project>
